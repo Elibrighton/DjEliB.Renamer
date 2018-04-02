@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace DjEliB.Renamer.Views
 {
     /// <summary>
-    /// Interaction logic for RenamerWindow.xaml
+    /// Interaction logic for RenamerView.xaml
     /// </summary>
-    public partial class RenamerWindow : Window
+    public partial class RenamerView : Window
     {
-        public RenamerWindow()
+        public RenamerView()
         {
             InitializeComponent();
         }

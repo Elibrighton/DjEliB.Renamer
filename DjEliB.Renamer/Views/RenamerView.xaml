@@ -1,0 +1,30 @@
+﻿<Window x:Class="DjEliB.Renamer.Views.RenamerView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DjEliB.Renamer.ViewModels"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Renamer" Height="300" Width="500">   
+    <Window.DataContext>
+        <local:RenamerViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <sys:String x:Key="strSourceDirectory">C:\DJ Eli B\Unprocessed</sys:String>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0"  Margin="10" Content="Source directory:"></Label>
+        <TextBox Grid.Column="0" Grid.Row="1"  Margin="10" Text="{Binding TxtSourceDirectory, UpdateSourceTrigger=PropertyChanged, TargetNullValue={StaticResource strSourceDirectory}}"></TextBox>
+        <Button Grid.Column="1" Grid.Row="1" Margin="10" Command="{Binding BrowseButtonClickCommand}">Browse</Button>
+    </Grid>
+</Window>
