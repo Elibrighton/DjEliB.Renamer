@@ -14,6 +14,9 @@ namespace DjEliB.Renamer.ViewModels
     {
         private RenamerModel Renamer = new RenamerModel();
 
+        internal bool isCheckingSelectAll;
+        internal bool isSelectingAll;
+
         private string _txtSourceDirectory;
 
         public string TxtSourceDirectory
@@ -25,7 +28,7 @@ namespace DjEliB.Renamer.ViewModels
                 RaisePropertyChangedEvent("TxtSourceDirectory");
             }
         }
-        
+
         private bool _chkbxIsSinglesChecked;
 
         public bool ChkbxIsSinglesChecked
@@ -34,6 +37,7 @@ namespace DjEliB.Renamer.ViewModels
             set
             {
                 _chkbxIsSinglesChecked = value;
+                CheckSelectAll();
                 RaisePropertyChangedEvent("ChkbxIsSinglesChecked");
             }
         }
@@ -46,6 +50,7 @@ namespace DjEliB.Renamer.ViewModels
             set
             {
                 _chkbxIsElectroHouseChecked = value;
+                CheckSelectAll();
                 RaisePropertyChangedEvent("ChkbxIsElectroHouseChecked");
             }
         }
@@ -58,6 +63,7 @@ namespace DjEliB.Renamer.ViewModels
             set
             {
                 _chkbxIsDjFtpChecked = value;
+                CheckSelectAll();
                 RaisePropertyChangedEvent("ChkbxIsDjFtpChecked");
             }
         }
@@ -70,6 +76,7 @@ namespace DjEliB.Renamer.ViewModels
             set
             {
                 _chkbxIsUnderscoreChecked = value;
+                CheckSelectAll();
                 RaisePropertyChangedEvent("ChkbxIsUnderscoreChecked");
             }
         }
@@ -78,12 +85,11 @@ namespace DjEliB.Renamer.ViewModels
 
         public bool ChkbxIsSelectAllChecked
         {
-            get {
-                return _chkbxIsSelectAllChecked;
-            }
+            get { return _chkbxIsSelectAllChecked; }
             set
             {
                 _chkbxIsSelectAllChecked = value;
+                SelectAll();
                 RaisePropertyChangedEvent("ChkbxIsSelectAllChecked");
             }
         }
@@ -94,31 +100,48 @@ namespace DjEliB.Renamer.ViewModels
         {
             get
             {
-                return _getSourceDirectoryCommand ?? (_getSourceDirectoryCommand = new RelayCommand(x => {GetSourceDirectory();}));
+                return _getSourceDirectoryCommand ?? (_getSourceDirectoryCommand = new RelayCommand(x => { GetSourceDirectory(); }));
             }
         }
-
-        //private ICommand _selectAllCommand;
-
-        //public ICommand SelectAllCommand
-        //{
-        //    get
-        //    {
-        //        return _selectAllCommand ?? (_selectAllCommand = new RelayCommand(x => { SelectAll(); }));
-        //    }
-        //}
 
         public void GetSourceDirectory()
         {
             TxtSourceDirectory = Renamer.GetSourceDirectory();
         }
 
-        //public void SelectAll()
-        //{
-        //    if (!_chkbxIsSinglesChecked)
-        //    {
-        //        ChkbxIsSinglesChecked = true;
-        //    }
-        //}
+        public void SelectAll()
+        {
+            if (!isCheckingSelectAll)
+            {
+                isSelectingAll = true;
+                ChkbxIsSinglesChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsElectroHouseChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsDjFtpChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsUnderscoreChecked = _chkbxIsSelectAllChecked;
+                isSelectingAll = false;
+            }
+        }
+
+        public void CheckSelectAll()
+        {
+            if (!isSelectingAll)
+            {
+                isCheckingSelectAll = true;
+
+                if (_chkbxIsSinglesChecked &&
+                    _chkbxIsElectroHouseChecked &&
+                    _chkbxIsDjFtpChecked &&
+                    _chkbxIsUnderscoreChecked)
+                {
+                    ChkbxIsSelectAllChecked = true;
+                }
+                else
+                {
+                    ChkbxIsSelectAllChecked = false;
+                }
+
+                isCheckingSelectAll = false;
+            }
+        }
     }
 }

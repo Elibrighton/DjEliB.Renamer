@@ -39,11 +39,11 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding ChkBxIsSinglesChecked, UpdateSourceTrigger=PropertyChanged}">Singles numbers - 100 | 100. | 100- | 100 -</CheckBox>
-            <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding ChkBxIsElectroHouseChecked, UpdateSourceTrigger=PropertyChanged}">ElectroHouse - ElectroHouse.ucoz.com | - ElectroHouse.ucoz.com | http:\\ElectroHouse.ucoz.com</CheckBox>
-            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding ChkBxIsDjFtpChecked, UpdateSourceTrigger=PropertyChanged}">DJFTP.COM - DJFTP.COM</CheckBox>
-            <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsChecked="{Binding ChkBxIsUnderscoreChecked, UpdateSourceTrigger=PropertyChanged}">Underscore at spaces</CheckBox>
-            <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding ChkBxIsSelectAllChecked, UpdateSourceTrigger=PropertyChanged}">Select all</CheckBox>
+            <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSinglesChecked}">Singles numbers - 100 | 100. | 100- | 100 -</CheckBox>
+            <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsElectroHouseChecked}">ElectroHouse - ElectroHouse.ucoz.com | - ElectroHouse.ucoz.com | http:\\ElectroHouse.ucoz.com</CheckBox>
+            <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsDjFtpChecked}">DJFTP.COM - DJFTP.COM</CheckBox>
+            <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUnderscoreChecked}">Underscore at spaces</CheckBox>
+            <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSelectAllChecked}">Select all</CheckBox>
         </Grid>
     </StackPanel>
 </Window>
