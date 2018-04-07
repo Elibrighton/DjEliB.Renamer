@@ -10,6 +10,10 @@ namespace DjEliB.Renamer.Models
     public class RenamerModel
     {
         public string SourceDirectory { get; set; }
+        public bool IsSinglesChecked { get; set; }
+        public bool IsElectroHouseChecked { get; set; }
+        public bool IsDjFtpChecked { get; set; }
+        public bool IsUnderscoreChecked { get; set; }
 
         public string GetSourceDirectory()
         {

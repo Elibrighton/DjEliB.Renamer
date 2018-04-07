@@ -104,6 +104,16 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
+        private ICommand _closeApplicationCommand;
+
+        public ICommand CloseApplicationCommand
+        {
+            get
+            {
+                return _closeApplicationCommand ?? (_closeApplicationCommand = new RelayCommand(x => { CloseApplication(); }));
+            }
+        }
+        
         public void GetSourceDirectory()
         {
             TxtSourceDirectory = Renamer.GetSourceDirectory();
@@ -142,6 +152,11 @@ namespace DjEliB.Renamer.ViewModels
 
                 isCheckingSelectAll = false;
             }
+        }
+
+        public void CloseApplication()
+        {
+            Application.Current.Shutdown();
         }
     }
 }
