@@ -12,7 +12,7 @@ namespace DjEliB.Renamer.ViewModels
 {
     public class RenamerViewModel : ObservableObject
     {
-        private RenamerModel Renamer = new RenamerModel();
+        private RenamerModel _renamer = new RenamerModel();
 
         internal bool isCheckingSelectAll;
         internal bool isSelectingAll;
@@ -25,6 +25,7 @@ namespace DjEliB.Renamer.ViewModels
             set
             {
                 _txtSourceDirectory = value;
+                _renamer.SourceDirectory = _txtSourceDirectory;
                 RaisePropertyChangedEvent("TxtSourceDirectory");
             }
         }
@@ -113,10 +114,20 @@ namespace DjEliB.Renamer.ViewModels
                 return _closeApplicationCommand ?? (_closeApplicationCommand = new RelayCommand(x => { CloseApplication(); }));
             }
         }
-        
+
+        private ICommand _renameCommand;
+
+        public ICommand RenameCommand
+        {
+            get
+            {
+                return _renameCommand ?? (_renameCommand = new RelayCommand(x => { Rename(); }));
+            }
+        }
+
         public void GetSourceDirectory()
         {
-            TxtSourceDirectory = Renamer.GetSourceDirectory();
+            TxtSourceDirectory = _renamer.GetSourceDirectory();
         }
 
         public void SelectAll()
@@ -157,6 +168,11 @@ namespace DjEliB.Renamer.ViewModels
         public void CloseApplication()
         {
             Application.Current.Shutdown();
+        }
+
+        public void Rename()
+        {
+            _renamer.Rename();
         }
     }
 }

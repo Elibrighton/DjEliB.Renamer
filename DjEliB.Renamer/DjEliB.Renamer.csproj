@@ -58,6 +58,7 @@
     <Compile Include="Base\ObservableObject.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Models\RenamerModel.cs" />
+    <Compile Include="Services\Song.cs" />
     <Compile Include="ViewModels\RenamerViewModel.cs" />
     <Compile Include="Views\RenamerView.xaml.cs">
       <DependentUpon>RenamerView.xaml</DependentUpon>
