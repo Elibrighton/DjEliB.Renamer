@@ -187,11 +187,13 @@ namespace DjEliB.Renamer.ViewModels
         public void Rename()
         {
             _renamer.Rename();
+            MessageBox.Show("Finished renaming.");
         }
 
         public void Consolidate()
         {
             _renamer.Consolidate();
+            MessageBox.Show("Finished consolidation.");
         }
     }
 }

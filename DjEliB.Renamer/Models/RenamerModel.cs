@@ -82,11 +82,11 @@ namespace DjEliB.Renamer.Models
 
                         // Delete smallest file
                         File.Delete(isThisFileLargest ? sourcePath : path);
+                    }
 
-                        if (isThisFileLargest)
-                        {
-                            File.Move(path, sourcePath);
-                        }
+                    if (isThisFileLargest)
+                    {
+                        File.Move(path, sourcePath);
                     }
                 }
             }
