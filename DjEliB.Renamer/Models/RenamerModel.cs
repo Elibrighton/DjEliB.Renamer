@@ -12,11 +12,20 @@ namespace DjEliB.Renamer.Models
     public class RenamerModel
     {
         public string SourceDirectory { get; set; }
-
         public bool IsSinglesChecked { get; set; }
         public bool IsElectroHouseChecked { get; set; }
         public bool IsDjFtpChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
+
+        private const string singlesPattern = @"^[0-9]{2}[0-9]?(\.|\.\s|\s?\-\s?|\s)";
+        private const string electroHousePattern = @"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com";
+        private const string ftpPattern = @"DJFTP\.COM";
+        private const string supportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
+
+        public RenamerModel()
+        {
+            SourceDirectory = @"C:\DJ Eli B\Unprocessed";
+        }
 
         public string GetSourceDirectory()
         {
@@ -35,17 +44,19 @@ namespace DjEliB.Renamer.Models
 
         public void Rename()
         {
-            var selectedPatterns = GetSelectedPatterns();
-            var songs = GetSongs();
+            var patterns = GetSelectedPatterns();
 
-            foreach (var song in songs)
+            if (patterns.Any())
             {
-                if (IsSinglesChecked)
-                {
-                    if (!song.IsNumberedArtist)
-                    {
+                var songs = GetSongs();
 
-                    }
+                foreach (var song in songs)
+                {
+                    // Update ID3Tags
+                    song.Id3Tag.RemovePatterns(patterns);
+                    song.Id3Tag.Dispose();
+
+                    song.RemovePatterns(patterns);
                 }
             }
         }
@@ -53,22 +64,22 @@ namespace DjEliB.Renamer.Models
         public List<Song> GetSongs()
         {
             var songs = new List<Song>();
-            var fileEntries = Directory.GetFiles(SourceDirectory);
+            var files = Directory.GetFiles(SourceDirectory);
 
-            foreach (string fileName in fileEntries)
+            foreach (string path in files)
             {
-                if (IsMusicFile(fileName))
+                if (IsMusicFile(path))
                 {
-                    songs.Add(new Song(fileName));
+                    songs.Add(new Song(path));
                 }
             }
 
             return songs;
         }
 
-        public bool IsMusicFile(string fileName)
+        public bool IsMusicFile(string path)
         {
-            return Regex.IsMatch(fileName, @"\.(mp3$|wav$|mp4$)", RegexOptions.IgnoreCase);
+            return Regex.IsMatch(path, supportedExtensionPattern, RegexOptions.IgnoreCase);
         }
 
         public List<string> GetSelectedPatterns()
@@ -77,18 +88,20 @@ namespace DjEliB.Renamer.Models
 
             if (IsSinglesChecked)
             {
-                patterns.Add(@"^[0-9]{2}[0-9]?(\.|\.\s|\s?\-\s?|\s)");
+                patterns.Add(singlesPattern);
             }
 
             if (IsElectroHouseChecked)
             {
-                patterns.Add(@"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com");
+                patterns.Add(electroHousePattern);
             }
 
             if (IsDjFtpChecked)
             {
-                patterns.Add(@"DJFTP\.COM");
+                patterns.Add(ftpPattern);
             }
+
+            // where is underscore pattern?
 
             return patterns;
         }

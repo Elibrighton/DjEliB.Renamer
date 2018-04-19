@@ -39,6 +39,7 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _chkbxIsSinglesChecked = value;
                 CheckSelectAll();
+                _renamer.IsSinglesChecked = _chkbxIsSinglesChecked;
                 RaisePropertyChangedEvent("ChkbxIsSinglesChecked");
             }
         }
@@ -52,6 +53,7 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _chkbxIsElectroHouseChecked = value;
                 CheckSelectAll();
+                _renamer.IsElectroHouseChecked = _chkbxIsElectroHouseChecked;
                 RaisePropertyChangedEvent("ChkbxIsElectroHouseChecked");
             }
         }
@@ -65,6 +67,7 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _chkbxIsDjFtpChecked = value;
                 CheckSelectAll();
+                _renamer.IsDjFtpChecked = _chkbxIsDjFtpChecked;
                 RaisePropertyChangedEvent("ChkbxIsDjFtpChecked");
             }
         }
@@ -78,6 +81,7 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _chkbxIsUnderscoreChecked = value;
                 CheckSelectAll();
+                _renamer.IsUnderscoreChecked = _chkbxIsUnderscoreChecked;
                 RaisePropertyChangedEvent("ChkbxIsUnderscoreChecked");
             }
         }
