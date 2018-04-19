@@ -27,6 +27,71 @@ namespace DjEliB.Renamer.Models
             SourceDirectory = @"C:\DJ Eli B\Unprocessed";
         }
 
+        public void Consolidate()
+        {
+            if (Directory.Exists(SourceDirectory))
+            {
+                ProcessDirectory(SourceDirectory);
+                DeleteSubDirectories(SourceDirectory);
+            }
+        }
+
+        public void DeleteSubDirectories(string targetDirectory)
+        {
+            var subdirectoryEntries = Directory.GetDirectories(targetDirectory);
+
+            foreach (var subdirectory in subdirectoryEntries)
+            {
+                Directory.Delete(subdirectory);
+            }
+        }
+
+        public void ProcessDirectory(string targetDirectory)
+        {
+            if (targetDirectory != SourceDirectory)
+            {
+                var fileEntries = Directory.GetFiles(targetDirectory);
+
+                foreach (var fileName in fileEntries)
+                {
+                    MoveFile(fileName);
+                }
+            }
+
+            var subdirectoryEntries = Directory.GetDirectories(targetDirectory);
+
+            foreach (var subdirectory in subdirectoryEntries)
+            {
+                ProcessDirectory(subdirectory);
+            }
+        }
+
+        public void MoveFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                if (IsMusicFile(path))
+                {
+                    var fileName = Path.GetFileName(path);
+                    var sourcePath = string.Concat(SourceDirectory, @"\", fileName);
+                    var isThisFileLargest = true;
+
+                    if (File.Exists(sourcePath))
+                    {
+                        isThisFileLargest = Song.GetFileLength(path) >= Song.GetFileLength(sourcePath);
+
+                        // Delete smallest file
+                        File.Delete(isThisFileLargest ? sourcePath : path);
+
+                        if (isThisFileLargest)
+                        {
+                            File.Move(path, sourcePath);
+                        }
+                    }
+                }
+            }
+        }
+
         public string GetSourceDirectory()
         {
             using (var dialog = new FolderBrowserDialog())

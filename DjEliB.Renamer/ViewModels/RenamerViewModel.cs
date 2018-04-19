@@ -129,6 +129,16 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
+        private ICommand _consolidateCommand;
+
+        public ICommand ConsolidateCommand
+        {
+            get
+            {
+                return _consolidateCommand ?? (_consolidateCommand = new RelayCommand(x => { Consolidate(); }));
+            }
+        }
+
         public void GetSourceDirectory()
         {
             TxtSourceDirectory = _renamer.GetSourceDirectory();
@@ -177,6 +187,11 @@ namespace DjEliB.Renamer.ViewModels
         public void Rename()
         {
             _renamer.Rename();
+        }
+
+        public void Consolidate()
+        {
+            _renamer.Consolidate();
         }
     }
 }

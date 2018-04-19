@@ -89,7 +89,7 @@ namespace DjEliB.Renamer
             }
         }
 
-        public long GetFileLength(string path)
+        public static long GetFileLength(string path)
         {
             return new FileInfo(path).Length;
         }
