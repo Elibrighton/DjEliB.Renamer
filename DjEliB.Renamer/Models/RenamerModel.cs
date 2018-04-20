@@ -31,7 +31,7 @@ namespace DjEliB.Renamer.Models
         {
             if (Directory.Exists(SourceDirectory))
             {
-                ProcessDirectory(SourceDirectory);
+                ConsolidateSubDirectories(SourceDirectory);
                 DeleteSubDirectories(SourceDirectory);
             }
         }
@@ -46,7 +46,7 @@ namespace DjEliB.Renamer.Models
             }
         }
 
-        public void ProcessDirectory(string targetDirectory)
+        public void ConsolidateSubDirectories(string targetDirectory)
         {
             if (targetDirectory != SourceDirectory)
             {
@@ -62,7 +62,7 @@ namespace DjEliB.Renamer.Models
 
             foreach (var subdirectory in subdirectoryEntries)
             {
-                ProcessDirectory(subdirectory);
+                ConsolidateSubDirectories(subdirectory);
             }
         }
 
@@ -88,6 +88,10 @@ namespace DjEliB.Renamer.Models
                     {
                         File.Move(path, sourcePath);
                     }
+                }
+                else
+                {
+                    File.Delete(path);
                 }
             }
         }
