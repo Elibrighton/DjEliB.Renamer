@@ -17,7 +17,7 @@ namespace DjEliB.Renamer.Models
         public bool IsDjFtpChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
 
-        private const string singlesPattern = @"^[0-9]{2}[0-9]?(\.|\.\s|\s?\-\s?|\s)";
+        private const string singlesPattern = @"^[0-9]+(\.|\.\s|\s?\-\s?|\s)";
         private const string electroHousePattern = @"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com";
         private const string ftpPattern = @"DJFTP\.COM";
         private const string supportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
@@ -115,17 +115,27 @@ namespace DjEliB.Renamer.Models
         {
             var patterns = GetSelectedPatterns();
 
-            if (patterns.Any())
+            if (patterns.Any() || IsUnderscoreChecked)
             {
                 var songs = GetSongs();
 
                 foreach (var song in songs)
                 {
-                    // Update ID3Tags
                     song.Id3Tag.RemovePatterns(patterns);
-                    song.Id3Tag.Dispose();
+                    song.Id3Tag.EmptyComment();
+                    song.Id3Tag.EmptyFrames();
 
                     song.RemovePatterns(patterns);
+
+                    if (IsUnderscoreChecked)
+                    {
+                        song.Id3Tag.ReplaceUnderscores();
+
+                        song.ReplaceUnderscores();
+                    }
+
+                    song.Id3Tag.Save();
+                    song.Id3Tag.Dispose();
                 }
             }
         }
@@ -169,8 +179,6 @@ namespace DjEliB.Renamer.Models
             {
                 patterns.Add(ftpPattern);
             }
-
-            // where is underscore pattern?
 
             return patterns;
         }

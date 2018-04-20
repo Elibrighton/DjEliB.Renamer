@@ -38,45 +38,66 @@ namespace DjEliB.Renamer.Services
         {
             foreach (var pattern in patterns)
             {
-                UpdateTitle(pattern, _tagLibFile.Tag.Title);
-                UpdateAlbumArtists(pattern, _tagLibFile.Tag.FirstAlbumArtist);
-                UpdateAlbum(pattern, _tagLibFile.Tag.Album);
-                UpdateComment();
-            }
+                if (_tagLibFile != null)
+                {
+                    _tagLibFile.Tag.Title = Song.ReplacePattern(pattern, _tagLibFile.Tag.Title);
 
-            Save();
-        }
-
-        public void UpdateTitle(string pattern, string title = null)
-        {
-            if (_tagLibFile != null)
-            {
-                _tagLibFile.Tag.Title = Song.ReplacePattern(pattern, title);
+                    var renamedPerformer = Song.ReplacePattern(pattern, _tagLibFile.Tag.FirstPerformer);
+                    _tagLibFile.Tag.Performers = null;
+                    _tagLibFile.Tag.Performers = new[] { renamedPerformer };
+                }
             }
         }
 
-        public void UpdateAlbumArtists(string pattern, string artist = null)
+        internal void EmptyComment()
         {
             if (_tagLibFile != null)
             {
-                _tagLibFile.Tag.AlbumArtists = new[] { Song.ReplacePattern(pattern, artist) };
+                _tagLibFile.Tag.Comment = string.Empty;
             }
         }
 
-        public void UpdateAlbum(string pattern, string album = null)
+        internal void EmptyFrames()
         {
             if (_tagLibFile != null)
             {
-                _tagLibFile.Tag.Album = Song.ReplacePattern(pattern, album);
+                var id3v2Tag = (TagLib.Id3v2.Tag)_tagLibFile.GetTag(TagLib.TagTypes.Id3v2);
+
+                if (id3v2Tag != null)
+                {
+                    // reference {https://en.wikipedia.org/wiki/ID3#ID3v2_Frame_Specification_.28Version_2.3.29}
+                    id3v2Tag.SetTextFrame("WOAF", "");
+                    id3v2Tag.SetTextFrame("TRSN", "");
+                    id3v2Tag.SetTextFrame("TXXX", "");
+                    id3v2Tag.SetTextFrame("WXXX", "");
+                }
             }
         }
 
-        public void UpdateComment(string comment = null)
+        internal void ReplaceUnderscores()
         {
             if (_tagLibFile != null)
             {
-                _tagLibFile.Tag.Comment = comment;
+                _tagLibFile.Tag.Title = ReplaceUnderscore(_tagLibFile.Tag.Title);
+
+                var replacedPerformer = ReplaceUnderscore(_tagLibFile.Tag.FirstPerformer);
+                _tagLibFile.Tag.Performers = null;
+                _tagLibFile.Tag.Performers = new[] { replacedPerformer };
             }
+        }
+
+        private string ReplaceUnderscore(string songText)
+        {
+            if (!string.IsNullOrEmpty(songText))
+            {
+                if (!songText.Contains(" ") && songText.Contains("_"))
+                {
+                    songText = songText.Replace("_", " ");
+                    songText.Trim();
+                }
+            }
+
+            return songText;
         }
     }
 }

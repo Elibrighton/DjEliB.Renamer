@@ -29,6 +29,7 @@ namespace DjEliB.Renamer
 
                 _path = value;
 
+                Id3Tag = new ID3Tag(_path);
                 Directory = System.IO.Path.GetDirectoryName(_path);
                 FileName = System.IO.Path.GetFileNameWithoutExtension(_path);
                 Extension = System.IO.Path.GetExtension(_path);
@@ -49,43 +50,43 @@ namespace DjEliB.Renamer
                 if (!IsNumberedArtist(FileName))
                 {
                     var renamedFileName = ReplacePattern(pattern, FileName);
-                    var renamedPath = string.Concat(Directory, @"\", renamedFileName, Extension);
-
-                    if (renamedPath != _path)
-                    {
-                        RenameFile(renamedPath);
-                    }
+                    RenameFile(renamedFileName);
                 }
             }
         }
 
-        public void RenameFile(string renamedPath)
+        public void RenameFile(string renamedFileName)
         {
-            var isThisFileLargest = true;
-            var isFileRenamed = false;
+            var renamedPath = string.Concat(Directory, @"\", renamedFileName, Extension);
 
-            if (File.Exists(renamedPath))
+            if (renamedPath != _path)
             {
-                isThisFileLargest = GetFileLength(_path) >= GetFileLength(renamedPath);
+                var isThisFileLargest = true;
+                var isFileRenamed = false;
 
-                // Delete smallest file
-                File.Delete(isThisFileLargest ? renamedPath : _path);
-
-                if (!isThisFileLargest)
+                if (File.Exists(renamedPath))
                 {
-                    isFileRenamed = true;
+                    isThisFileLargest = GetFileLength(_path) >= GetFileLength(renamedPath);
+
+                    // Delete smallest file
+                    File.Delete(isThisFileLargest ? renamedPath : _path);
+
+                    if (!isThisFileLargest)
+                    {
+                        isFileRenamed = true;
+                    }
                 }
-            }
 
-            if (isThisFileLargest)
-            {
-                File.Move(_path, renamedPath);
-                isFileRenamed = File.Exists(renamedPath);
-            }
+                if (isThisFileLargest)
+                {
+                    File.Move(_path, renamedPath);
+                    isFileRenamed = File.Exists(renamedPath);
+                }
 
-            if (isFileRenamed)
-            {
-                Path = renamedPath;
+                if (isFileRenamed)
+                {
+                    Path = renamedPath;
+                }
             }
         }
 
@@ -130,6 +131,15 @@ namespace DjEliB.Renamer
             }
 
             return songText;
+        }
+
+        internal void ReplaceUnderscores()
+        {
+            if (!FileName.Contains(" ") && FileName.Contains("_"))
+            {
+                var renamedFileName = FileName.Replace("_", " ");
+                RenameFile(renamedFileName);
+            }
         }
 
         private static string[] GetNumberedArtists()
