@@ -57,6 +57,14 @@ namespace DjEliB.Renamer.Services
             }
         }
 
+        internal void EmptyAlbum()
+        {
+            if (_tagLibFile != null)
+            {
+                _tagLibFile.Tag.Album = string.Empty;
+            }
+        }
+
         internal void EmptyFrames()
         {
             if (_tagLibFile != null)

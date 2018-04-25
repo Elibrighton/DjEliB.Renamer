@@ -11,6 +11,14 @@ namespace DjEliB.Renamer
 {
     public class Song
     {
+        public const string SinglesPattern = @"^\.?[0-9]+(\.|\.\s|\s?\-\s?|\s)";
+        public const string ElectroHousePattern = @"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com";
+        public const string FtpPattern = @"DJFTP\.COM";
+        public const string ZeroDayMusicPattern = @"www\.0daymusic\.org";
+        public const string NewPattern = @"\(new\)";
+        public const string UkTopFortyPattern = @"\-\sUK\sTop\s40\s\[\d\d\-\d\d\-\d\d\d\d\]\s\-\s\[\d\d\d\]";
+        public const string SupportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
+
         public Song(string path)
         {
             Path = path;
@@ -47,7 +55,7 @@ namespace DjEliB.Renamer
         {
             foreach (var pattern in patterns)
             {
-                if (!IsNumberedArtist(FileName))
+                if (!IsNumberedArtist(FileName) || pattern != SinglesPattern)
                 {
                     var renamedFileName = ReplacePattern(pattern, FileName);
                     RenameFile(renamedFileName);
@@ -120,7 +128,7 @@ namespace DjEliB.Renamer
         {
             if (!string.IsNullOrEmpty(songText))
             {
-                if (!Song.IsNumberedArtist(songText))
+                if (!Song.IsNumberedArtist(songText) || pattern != SinglesPattern)
                 {
                     if (Regex.IsMatch(songText, pattern))
                     {
@@ -138,6 +146,15 @@ namespace DjEliB.Renamer
             if (!FileName.Contains(" ") && FileName.Contains("_"))
             {
                 var renamedFileName = FileName.Replace("_", " ");
+                RenameFile(renamedFileName);
+            }
+        }
+
+        internal void ReplaceHyphen()
+        {
+            if (FileName.Contains("–"))
+            {
+                var renamedFileName = FileName.Replace("–", "-");
                 RenameFile(renamedFileName);
             }
         }

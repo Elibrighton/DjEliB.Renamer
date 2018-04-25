@@ -20,14 +20,6 @@ namespace DjEliB.Renamer.Models
         public bool IsUkTopFortyChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
 
-        private const string singlesPattern = @"^\.?[0-9]+(\.|\.\s|\s?\-\s?|\s)";
-        private const string electroHousePattern = @"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com";
-        private const string ftpPattern = @"DJFTP\.COM";
-        private const string zeroDayMusicPattern = @"www\.0daymusic\.org";
-        private const string newPattern = @"\(new\)";
-        private const string ukTopFortyPattern = @"\-\sUK\sTop\s40\s\[\d\d\-\d\d\-\d\d\d\d\]\s\-\s\[\d\d\d\]";
-        private const string supportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
-
         public RenamerModel()
         {
             SourceDirectory = @"C:\DJ Eli B\Unprocessed";
@@ -138,7 +130,7 @@ namespace DjEliB.Renamer.Models
 
         public bool IsMusicFile(string path)
         {
-            return Regex.IsMatch(path, supportedExtensionPattern, RegexOptions.IgnoreCase);
+            return Regex.IsMatch(path, Song.SupportedExtensionPattern, RegexOptions.IgnoreCase);
         }
 
         public List<string> GetSelectedPatterns()
@@ -147,32 +139,32 @@ namespace DjEliB.Renamer.Models
 
             if (IsSinglesChecked)
             {
-                patterns.Add(singlesPattern);
+                patterns.Add(Song.SinglesPattern);
             }
 
             if (IsElectroHouseChecked)
             {
-                patterns.Add(electroHousePattern);
+                patterns.Add(Song.ElectroHousePattern);
             }
 
             if (IsDjFtpChecked)
             {
-                patterns.Add(ftpPattern);
+                patterns.Add(Song.FtpPattern);
             }
 
             if (IsZeroDayMusicChecked)
             {
-                patterns.Add(zeroDayMusicPattern);
+                patterns.Add(Song.ZeroDayMusicPattern);
             }
 
             if (IsNewChecked)
             {
-                patterns.Add(newPattern);
+                patterns.Add(Song.NewPattern);
             }
 
             if (IsUkTopFortyChecked)
             {
-                patterns.Add(ukTopFortyPattern);
+                patterns.Add(Song.UkTopFortyPattern);
             }
 
             return patterns;

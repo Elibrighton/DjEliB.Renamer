@@ -238,6 +238,9 @@ namespace DjEliB.Renamer.ViewModels
                 ChkbxIsSinglesChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsElectroHouseChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsDjFtpChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsZeroDayMusicChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsNewChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsUkTopFortyChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsUnderscoreChecked = _chkbxIsSelectAllChecked;
                 isSelectingAll = false;
             }
@@ -252,6 +255,9 @@ namespace DjEliB.Renamer.ViewModels
                 if (_chkbxIsSinglesChecked &&
                     _chkbxIsElectroHouseChecked &&
                     _chkbxIsDjFtpChecked &&
+                    _chkbxIsZeroDayMusicChecked &&
+                    _chkbxIsNewChecked &&
+                    _chkbxIsUkTopFortyChecked &&
                     _chkbxIsUnderscoreChecked)
                 {
                     ChkbxIsSelectAllChecked = true;
@@ -272,19 +278,23 @@ namespace DjEliB.Renamer.ViewModels
 
         public void Rename()
         {
+            MainProgressIsIndeterminate = true;
             var patterns = _renamer.GetSelectedPatterns();
 
             if (patterns.Any() || _renamer.IsUnderscoreChecked)
             {
                 var songs = _renamer.GetSongs();
+                MainProgressIsIndeterminate = false;
                 MainProgressMax = songs.Count();
 
                 foreach (var song in songs)
                 {
                     song.Id3Tag.RemovePatterns(patterns);
                     song.Id3Tag.EmptyComment();
+                    song.Id3Tag.EmptyAlbum();
                     song.Id3Tag.EmptyFrames();
 
+                    song.ReplaceHyphen();
                     song.RemovePatterns(patterns);
 
                     if (_renamer.IsUnderscoreChecked)
@@ -300,6 +310,7 @@ namespace DjEliB.Renamer.ViewModels
                 }
             }
 
+            MainProgressIsIndeterminate = false;
             MessageBox.Show("Finished renaming.");
             ResetMainProgress();
         }
