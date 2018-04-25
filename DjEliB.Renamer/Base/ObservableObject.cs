@@ -11,7 +11,7 @@ namespace DjEliB.Renamer.Base
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void RaisePropertyChangedEvent(string propertyName)
+        protected void NotifyPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             if (handler != null)

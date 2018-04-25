@@ -17,6 +17,80 @@ namespace DjEliB.Renamer.ViewModels
         internal bool isCheckingSelectAll;
         internal bool isSelectingAll;
 
+        public ICommand BrowseButtonCommand { get; set; }
+        public ICommand ConsolidateFilesButtonCommand { get; set; }
+        public ICommand RenameButtonCommand { get; set; }
+
+        public RenamerViewModel()
+        {
+            BrowseButtonCommand = new RelayCommand(OnBrowseButton);
+            ConsolidateFilesButtonCommand = new RelayCommand(OnConsolidateFilesButton);
+            RenameButtonCommand = new RelayCommand(OnRenameButton);
+            ResetMainProgress();
+        }
+
+        private async void OnRenameButton(object param)
+        {
+            await Task.Run(() => Rename());
+        }
+
+        private void OnBrowseButton(object param)
+        {
+            GetSourceDirectory();
+        }
+
+        private async void OnConsolidateFilesButton(object param)
+        {
+            MainProgressIsIndeterminate = true;
+            await Task.Run(() => Consolidate());
+            //MainProgressIsIndeterminate = false;
+        }
+
+        private bool _mainProgressIsIndeterminate;
+
+        public bool MainProgressIsIndeterminate
+        {
+            get { return _mainProgressIsIndeterminate; }
+            set
+            {
+                if (_mainProgressIsIndeterminate != value)
+                {
+                    _mainProgressIsIndeterminate = value;
+                    NotifyPropertyChanged("MainProgressIsIndeterminate");
+                }
+            }
+        }
+
+        private int _mainProgressValue;
+
+        public int MainProgressValue
+        {
+            get { return _mainProgressValue; }
+            set
+            {
+                if (_mainProgressValue != value)
+                {
+                    _mainProgressValue = value;
+                    NotifyPropertyChanged("MainProgressValue");
+                }
+            }
+        }
+
+        private int _mainProgressMax;
+
+        public int MainProgressMax
+        {
+            get { return _mainProgressMax; }
+            set
+            {
+                if (_mainProgressMax != value)
+                {
+                    _mainProgressMax = value;
+                    NotifyPropertyChanged("MainProgressMax");
+                }
+            }
+        }
+
         private string _txtSourceDirectory;
 
         public string TxtSourceDirectory
@@ -26,7 +100,7 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _txtSourceDirectory = value;
                 _renamer.SourceDirectory = _txtSourceDirectory;
-                RaisePropertyChangedEvent("TxtSourceDirectory");
+                NotifyPropertyChanged("TxtSourceDirectory");
             }
         }
 
@@ -40,7 +114,7 @@ namespace DjEliB.Renamer.ViewModels
                 _chkbxIsSinglesChecked = value;
                 CheckSelectAll();
                 _renamer.IsSinglesChecked = _chkbxIsSinglesChecked;
-                RaisePropertyChangedEvent("ChkbxIsSinglesChecked");
+                NotifyPropertyChanged("ChkbxIsSinglesChecked");
             }
         }
 
@@ -54,7 +128,7 @@ namespace DjEliB.Renamer.ViewModels
                 _chkbxIsElectroHouseChecked = value;
                 CheckSelectAll();
                 _renamer.IsElectroHouseChecked = _chkbxIsElectroHouseChecked;
-                RaisePropertyChangedEvent("ChkbxIsElectroHouseChecked");
+                NotifyPropertyChanged("ChkbxIsElectroHouseChecked");
             }
         }
 
@@ -68,7 +142,49 @@ namespace DjEliB.Renamer.ViewModels
                 _chkbxIsDjFtpChecked = value;
                 CheckSelectAll();
                 _renamer.IsDjFtpChecked = _chkbxIsDjFtpChecked;
-                RaisePropertyChangedEvent("ChkbxIsDjFtpChecked");
+                NotifyPropertyChanged("ChkbxIsDjFtpChecked");
+            }
+        }
+
+        private bool _chkbxIsZeroDayMusicChecked;
+
+        public bool ChkbxIsZeroDayMusicChecked
+        {
+            get { return _chkbxIsZeroDayMusicChecked; }
+            set
+            {
+                _chkbxIsZeroDayMusicChecked = value;
+                CheckSelectAll();
+                _renamer.IsZeroDayMusicChecked = _chkbxIsZeroDayMusicChecked;
+                NotifyPropertyChanged("ChkbxIsZeroDayMusicChecked");
+            }
+        }
+
+        private bool _chkbxIsNewChecked;
+
+        public bool ChkbxIsNewChecked
+        {
+            get { return _chkbxIsNewChecked; }
+            set
+            {
+                _chkbxIsNewChecked = value;
+                CheckSelectAll();
+                _renamer.IsNewChecked = _chkbxIsNewChecked;
+                NotifyPropertyChanged("ChkbxIsNewChecked");
+            }
+        }
+
+        private bool _chkbxIsUkTopFortyChecked;
+
+        public bool ChkbxIsUkTopFortyChecked
+        {
+            get { return _chkbxIsUkTopFortyChecked; }
+            set
+            {
+                _chkbxIsUkTopFortyChecked = value;
+                CheckSelectAll();
+                _renamer.IsUkTopFortyChecked = _chkbxIsUkTopFortyChecked;
+                NotifyPropertyChanged("ChkbxIsUkTopFortyChecked");
             }
         }
 
@@ -82,7 +198,7 @@ namespace DjEliB.Renamer.ViewModels
                 _chkbxIsUnderscoreChecked = value;
                 CheckSelectAll();
                 _renamer.IsUnderscoreChecked = _chkbxIsUnderscoreChecked;
-                RaisePropertyChangedEvent("ChkbxIsUnderscoreChecked");
+                NotifyPropertyChanged("ChkbxIsUnderscoreChecked");
             }
         }
 
@@ -95,20 +211,10 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _chkbxIsSelectAllChecked = value;
                 SelectAll();
-                RaisePropertyChangedEvent("ChkbxIsSelectAllChecked");
+                NotifyPropertyChanged("ChkbxIsSelectAllChecked");
             }
         }
-
-        private ICommand _getSourceDirectoryCommand;
-
-        public ICommand GetSourceDirectoryCommand
-        {
-            get
-            {
-                return _getSourceDirectoryCommand ?? (_getSourceDirectoryCommand = new RelayCommand(x => { GetSourceDirectory(); }));
-            }
-        }
-
+        
         private ICommand _closeApplicationCommand;
 
         public ICommand CloseApplicationCommand
@@ -118,27 +224,7 @@ namespace DjEliB.Renamer.ViewModels
                 return _closeApplicationCommand ?? (_closeApplicationCommand = new RelayCommand(x => { CloseApplication(); }));
             }
         }
-
-        private ICommand _renameCommand;
-
-        public ICommand RenameCommand
-        {
-            get
-            {
-                return _renameCommand ?? (_renameCommand = new RelayCommand(x => { Rename(); }));
-            }
-        }
-
-        private ICommand _consolidateCommand;
-
-        public ICommand ConsolidateCommand
-        {
-            get
-            {
-                return _consolidateCommand ?? (_consolidateCommand = new RelayCommand(x => { Consolidate(); }));
-            }
-        }
-
+        
         public void GetSourceDirectory()
         {
             TxtSourceDirectory = _renamer.GetSourceDirectory();
@@ -186,8 +272,42 @@ namespace DjEliB.Renamer.ViewModels
 
         public void Rename()
         {
-            _renamer.Rename();
+            var patterns = _renamer.GetSelectedPatterns();
+
+            if (patterns.Any() || _renamer.IsUnderscoreChecked)
+            {
+                var songs = _renamer.GetSongs();
+                MainProgressMax = songs.Count();
+
+                foreach (var song in songs)
+                {
+                    song.Id3Tag.RemovePatterns(patterns);
+                    song.Id3Tag.EmptyComment();
+                    song.Id3Tag.EmptyFrames();
+
+                    song.RemovePatterns(patterns);
+
+                    if (_renamer.IsUnderscoreChecked)
+                    {
+                        song.Id3Tag.ReplaceUnderscores();
+
+                        song.ReplaceUnderscores();
+                    }
+
+                    song.Id3Tag.Save();
+                    song.Id3Tag.Dispose();
+                    MainProgressValue++;
+                }
+            }
+
             MessageBox.Show("Finished renaming.");
+            ResetMainProgress();
+        }
+
+        private void ResetMainProgress()
+        {
+            MainProgressValue = 0;
+            MainProgressMax = 1;
         }
 
         public void Consolidate()

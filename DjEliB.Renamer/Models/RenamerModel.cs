@@ -15,11 +15,17 @@ namespace DjEliB.Renamer.Models
         public bool IsSinglesChecked { get; set; }
         public bool IsElectroHouseChecked { get; set; }
         public bool IsDjFtpChecked { get; set; }
+        public bool IsZeroDayMusicChecked { get; set; }
+        public bool IsNewChecked { get; set; }
+        public bool IsUkTopFortyChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
 
-        private const string singlesPattern = @"^[0-9]+(\.|\.\s|\s?\-\s?|\s)";
+        private const string singlesPattern = @"^\.?[0-9]+(\.|\.\s|\s?\-\s?|\s)";
         private const string electroHousePattern = @"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com";
         private const string ftpPattern = @"DJFTP\.COM";
+        private const string zeroDayMusicPattern = @"www\.0daymusic\.org";
+        private const string newPattern = @"\(new\)";
+        private const string ukTopFortyPattern = @"\-\sUK\sTop\s40\s\[\d\d\-\d\d\-\d\d\d\d\]\s\-\s\[\d\d\d\]";
         private const string supportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
 
         public RenamerModel()
@@ -31,22 +37,23 @@ namespace DjEliB.Renamer.Models
         {
             if (Directory.Exists(SourceDirectory))
             {
-                ConsolidateSubDirectories(SourceDirectory);
-                DeleteSubDirectories(SourceDirectory);
+                ConsolidateSubdirectories(SourceDirectory);
+                DeleteSubdirectories(SourceDirectory);
             }
         }
 
-        public void DeleteSubDirectories(string targetDirectory)
+        public void DeleteSubdirectories(string targetDirectory)
         {
             var subdirectoryEntries = Directory.GetDirectories(targetDirectory);
 
             foreach (var subdirectory in subdirectoryEntries)
             {
+                DeleteSubdirectories(subdirectory);
                 Directory.Delete(subdirectory);
             }
         }
 
-        public void ConsolidateSubDirectories(string targetDirectory)
+        public void ConsolidateSubdirectories(string targetDirectory)
         {
             if (targetDirectory != SourceDirectory)
             {
@@ -62,7 +69,7 @@ namespace DjEliB.Renamer.Models
 
             foreach (var subdirectory in subdirectoryEntries)
             {
-                ConsolidateSubDirectories(subdirectory);
+                ConsolidateSubdirectories(subdirectory);
             }
         }
 
@@ -81,7 +88,9 @@ namespace DjEliB.Renamer.Models
                         isThisFileLargest = Song.GetFileLength(path) >= Song.GetFileLength(sourcePath);
 
                         // Delete smallest file
-                        File.Delete(isThisFileLargest ? sourcePath : path);
+                        var smallestFilePath = isThisFileLargest ? sourcePath : path;
+                        File.SetAttributes(smallestFilePath, FileAttributes.Normal);
+                        File.Delete(smallestFilePath);
                     }
 
                     if (isThisFileLargest)
@@ -109,35 +118,6 @@ namespace DjEliB.Renamer.Models
             }
 
             return SourceDirectory;
-        }
-
-        public void Rename()
-        {
-            var patterns = GetSelectedPatterns();
-
-            if (patterns.Any() || IsUnderscoreChecked)
-            {
-                var songs = GetSongs();
-
-                foreach (var song in songs)
-                {
-                    song.Id3Tag.RemovePatterns(patterns);
-                    song.Id3Tag.EmptyComment();
-                    song.Id3Tag.EmptyFrames();
-
-                    song.RemovePatterns(patterns);
-
-                    if (IsUnderscoreChecked)
-                    {
-                        song.Id3Tag.ReplaceUnderscores();
-
-                        song.ReplaceUnderscores();
-                    }
-
-                    song.Id3Tag.Save();
-                    song.Id3Tag.Dispose();
-                }
-            }
         }
 
         public List<Song> GetSongs()
@@ -178,6 +158,21 @@ namespace DjEliB.Renamer.Models
             if (IsDjFtpChecked)
             {
                 patterns.Add(ftpPattern);
+            }
+
+            if (IsZeroDayMusicChecked)
+            {
+                patterns.Add(zeroDayMusicPattern);
+            }
+
+            if (IsNewChecked)
+            {
+                patterns.Add(newPattern);
+            }
+
+            if (IsUkTopFortyChecked)
+            {
+                patterns.Add(ukTopFortyPattern);
             }
 
             return patterns;
