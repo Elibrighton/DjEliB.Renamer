@@ -145,6 +145,7 @@ namespace DjEliB.Renamer
         private static string[] GetNumberedArtists()
         {
             string[] numberedArtist = {
+                                                        @"^0\sT0\s100\sThe",
                                                         @"^1,\s2\sStep",
                                                         @"^100it",
                                                         @"^106\sMiles",
