@@ -159,6 +159,20 @@ namespace DjEliB.Renamer
             }
         }
 
+        internal void AddRemixName(string remixName)
+        {
+            remixName = remixName.Replace("(", "").Replace(")", "");
+            var pattern = string.Concat(@"\(", remixName, @".*\)");
+
+            if (!Regex.IsMatch(FileName, pattern))
+            {
+                remixName = string.Concat("(", remixName, ")");
+                var renamedFileName = string.Concat(FileName, " ", remixName);
+                RenameFile(renamedFileName);
+
+            }
+        }
+
         private static string[] GetNumberedArtists()
         {
             string[] numberedArtist = {
@@ -196,7 +210,9 @@ namespace DjEliB.Renamer
                                                         @"^20\sfingers",
                                                         @"^21\sSavage",
                                                         @"^24K\sMagic",
+                                                        @"^24\sHours",
                                                         @"^2\sPac",
+                                                        @"^28\sDays",
                                                         @"^2\sChainz",
                                                         @"^2\sTimes",
                                                         @"^2\sIn\sA\sRoom",
@@ -204,7 +220,8 @@ namespace DjEliB.Renamer
                                                         @"^2\sbrothers\son",
                                                         @"^2000\sAnd\sOne",
                                                         @"^311\s-\sAmber",
-                                                        @"^360",
+                                                        @"^360\s-",
+                                                        @"^360\sFt\.\s",
                                                         @"^3T",
                                                         @"^3LAU",
                                                         @"^3BOL",
@@ -217,11 +234,12 @@ namespace DjEliB.Renamer
                                                         @"^3\sDoors\sDown",
                                                         @"^3\sThes\sHard",
                                                         @"^4B",
-                                                        @"^4PM",
+                                                        @"^4\s?PM",
                                                         @"^4\sNon\sBlondes",
                                                         @"^5\sSeconds\sOf\sSummer",
                                                         @"^5\s&\sA\sDime",
                                                         @"^50\scent",
+                                                        @"^5\sO'Clock",
                                                         @"^50\sWays\sTo\sSay\sGoodbye",
                                                         @"^6\sAM",
                                                         @"^6\sInch",
@@ -233,6 +251,7 @@ namespace DjEliB.Renamer
                                                         @"^6ix9ine",
                                                         @"^6lack",
                                                         @"^6ix9ine",
+                                                        @"^6\sFoot\s7\sFoot",
                                                         @"^7\s11x",
                                                         @"^7\sTemperature",
                                                         @"^7\sYears",
@@ -240,6 +259,7 @@ namespace DjEliB.Renamer
                                                         @"^8ers",
                                                         @"^90's",
                                                         @"^95\sSouth",
+                                                        @"^98\sDegrees",
                                                         @"^99\sproblems",
                                                         @"^99\sSouls",
                                                         @"^99X"

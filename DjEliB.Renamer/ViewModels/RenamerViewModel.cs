@@ -43,7 +43,7 @@ namespace DjEliB.Renamer.ViewModels
         {
             MainProgressIsIndeterminate = true;
             await Task.Run(() => Consolidate());
-            //MainProgressIsIndeterminate = false;
+            MainProgressIsIndeterminate = false;
         }
 
         private bool _mainProgressIsIndeterminate;
@@ -101,6 +101,19 @@ namespace DjEliB.Renamer.ViewModels
                 _txtSourceDirectory = value;
                 _renamer.SourceDirectory = _txtSourceDirectory;
                 NotifyPropertyChanged("TxtSourceDirectory");
+            }
+        }
+
+        private string _txtRemixName;
+
+        public string TxtRemixName
+        {
+            get { return _txtRemixName; }
+            set
+            {
+                _txtRemixName = value;
+                _renamer.RemixName = _txtRemixName;
+                NotifyPropertyChanged("TxtRemixName");
             }
         }
 
@@ -188,6 +201,20 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
+        private bool _chkbxIsClearCommentChecked;
+
+        public bool ChkbxIsClearCommentChecked
+        {
+            get { return _chkbxIsClearCommentChecked; }
+            set
+            {
+                _chkbxIsClearCommentChecked = value;
+                CheckSelectAll();
+                _renamer.IsUkTopFortyChecked = _chkbxIsClearCommentChecked;
+                NotifyPropertyChanged("ChkbxIsClearCommentChecked");
+            }
+        }
+
         private bool _chkbxIsUnderscoreChecked;
 
         public bool ChkbxIsUnderscoreChecked
@@ -214,7 +241,7 @@ namespace DjEliB.Renamer.ViewModels
                 NotifyPropertyChanged("ChkbxIsSelectAllChecked");
             }
         }
-        
+
         private ICommand _closeApplicationCommand;
 
         public ICommand CloseApplicationCommand
@@ -224,7 +251,7 @@ namespace DjEliB.Renamer.ViewModels
                 return _closeApplicationCommand ?? (_closeApplicationCommand = new RelayCommand(x => { CloseApplication(); }));
             }
         }
-        
+
         public void GetSourceDirectory()
         {
             TxtSourceDirectory = _renamer.GetSourceDirectory();
@@ -242,6 +269,7 @@ namespace DjEliB.Renamer.ViewModels
                 ChkbxIsNewChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsUkTopFortyChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsUnderscoreChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsClearCommentChecked = _chkbxIsSelectAllChecked;
                 isSelectingAll = false;
             }
         }
@@ -258,6 +286,7 @@ namespace DjEliB.Renamer.ViewModels
                     _chkbxIsZeroDayMusicChecked &&
                     _chkbxIsNewChecked &&
                     _chkbxIsUkTopFortyChecked &&
+                    _chkbxIsClearCommentChecked &&
                     _chkbxIsUnderscoreChecked)
                 {
                     ChkbxIsSelectAllChecked = true;
@@ -281,7 +310,7 @@ namespace DjEliB.Renamer.ViewModels
             MainProgressIsIndeterminate = true;
             var patterns = _renamer.GetSelectedPatterns();
 
-            if (patterns.Any() || _renamer.IsUnderscoreChecked)
+            if (patterns.Any() || _renamer.IsUnderscoreChecked || _renamer.IsClearCommentChecked)
             {
                 var songs = _renamer.GetSongs();
                 MainProgressIsIndeterminate = false;
@@ -290,8 +319,8 @@ namespace DjEliB.Renamer.ViewModels
                 foreach (var song in songs)
                 {
                     song.Id3Tag.RemovePatterns(patterns);
-                    song.Id3Tag.EmptyComment();
                     song.Id3Tag.EmptyAlbum();
+                    song.Id3Tag.EmptyAlbumArtist();
                     song.Id3Tag.EmptyFrames();
 
                     song.ReplaceHyphen();
@@ -302,6 +331,17 @@ namespace DjEliB.Renamer.ViewModels
                         song.Id3Tag.ReplaceUnderscores();
 
                         song.ReplaceUnderscores();
+                    }
+
+                    if (_renamer.IsClearCommentChecked)
+                    {
+                        song.Id3Tag.EmptyComment();
+                    }
+
+                    if (!string.IsNullOrEmpty(_renamer.RemixName))
+                    {
+                        song.AddRemixName(_renamer.RemixName);
+                        song.Id3Tag.AddAlbum(_renamer.RemixName);
                     }
 
                     song.Id3Tag.Save();

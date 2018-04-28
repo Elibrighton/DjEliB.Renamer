@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DjEliB.Renamer.ViewModels"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Renamer" Height="350" Width="600">
+        Title="Renamer" Height="450" Width="600">
     <Window.DataContext>
         <local:RenamerViewModel/>
     </Window.DataContext>
@@ -80,15 +80,32 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSinglesChecked}">Singles numbers - 100 | 100. | 100- | 100 -</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsElectroHouseChecked}">ElectroHouse - ElectroHouse.ucoz.com | - ElectroHouse.ucoz.com | http:\\ElectroHouse.ucoz.com</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsDjFtpChecked}">DJFTP.COM - DJFTP.COM</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsZeroDayMusicChecked}">www.0daymusic.org - www.0daymusic.org</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsNewChecked}">(new) - (new)</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUkTopFortyChecked}">UK Top 40 - UK Top 40 [15-02-2009] - [320]</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUnderscoreChecked}">Underscore at spaces</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSelectAllChecked}">Select all</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSelectAllChecked}">Select all</CheckBox>
+                <Label Grid.Column="0" Grid.Row="1" Content="Patterns:"></Label>
+                <CheckBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSinglesChecked}">Singles numbers - 100 | 100. | 100- | 100 -</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsElectroHouseChecked}">ElectroHouse - ElectroHouse.ucoz.com | - ElectroHouse.ucoz.com | http:\\ElectroHouse.ucoz.com</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsDjFtpChecked}">DJFTP.COM - DJFTP.COM</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsZeroDayMusicChecked}">www.0daymusic.org - www.0daymusic.org</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsNewChecked}">(new) - (new)</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUkTopFortyChecked}">UK Top 40 - UK Top 40 [15-02-2009] - [320]</CheckBox>
+                <Label Grid.Column="0" Grid.Row="8" Content="Options:"></Label>
+                <CheckBox Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUnderscoreChecked}">Underscore at spaces</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsClearCommentChecked}">Clear comment</CheckBox>
+            </Grid>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="100"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" Content="Remix name:"></Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Margin="0, 0, 5, 0" Text="{Binding TxtRemixName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             </Grid>
             <Grid Margin="0, 10, 0, 0">
                 <Grid.ColumnDefinitions>

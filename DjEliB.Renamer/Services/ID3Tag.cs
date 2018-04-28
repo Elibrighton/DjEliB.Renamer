@@ -65,6 +65,23 @@ namespace DjEliB.Renamer.Services
             }
         }
 
+        internal void EmptyAlbumArtist()
+        {
+            if (_tagLibFile != null)
+            {
+                _tagLibFile.Tag.AlbumArtists = null;
+                _tagLibFile.Tag.AlbumArtists = new[] { "" };
+            }
+        }
+
+        internal void AddAlbum(string album)
+        {
+            if (_tagLibFile != null)
+            {
+                _tagLibFile.Tag.Album = album;
+            }
+        }
+
         internal void EmptyFrames()
         {
             if (_tagLibFile != null)

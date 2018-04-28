@@ -18,7 +18,9 @@ namespace DjEliB.Renamer.Models
         public bool IsZeroDayMusicChecked { get; set; }
         public bool IsNewChecked { get; set; }
         public bool IsUkTopFortyChecked { get; set; }
+        public bool IsClearCommentChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
+        public string RemixName { get; set; }
 
         public RenamerModel()
         {
