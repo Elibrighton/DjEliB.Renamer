@@ -22,6 +22,8 @@ namespace DjEliB.Renamer.Models
         public bool IsUnderscoreChecked { get; set; }
         public string ReleaseName { get; set; }
         public bool IsReleaseNameChecked { get; set; }
+        public bool IsFunkymixChecked { get; set; }
+        public bool IsBpmAtEndChecked { get; set; }
 
         public RenamerModel()
         {
@@ -168,6 +170,16 @@ namespace DjEliB.Renamer.Models
             if (IsUkTopFortyChecked)
             {
                 patterns.Add(Song.UkTopFortyPattern);
+            }
+
+            if (IsFunkymixChecked)
+            {
+                patterns.Add(Song.FunkymixPattern);
+            }
+
+            if (IsBpmAtEndChecked)
+            {
+                patterns.Add(Song.BpmAtEndPattern);
             }
 
             return patterns;

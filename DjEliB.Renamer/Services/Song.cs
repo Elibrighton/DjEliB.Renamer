@@ -17,6 +17,8 @@ namespace DjEliB.Renamer
         public const string ZeroDayMusicPattern = @"www\.0daymusic\.org";
         public const string NewPattern = @"\(new\)";
         public const string UkTopFortyPattern = @"\-\sUK\sTop\s40\s\[\d\d\-\d\d\-\d\d\d\d\]\s\-\s\[\d\d\d\]";
+        public const string FunkymixPattern = @"Funkymiix";
+        public const string BpmAtEndPattern = @"\d\d\d?$";
         public const string SupportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
 
         public Song(string path)
@@ -51,13 +53,15 @@ namespace DjEliB.Renamer
 
         private string _path;
 
-        public void RemovePatterns(List<string> patterns)
+        public void ReplacePatterns(List<string> patterns)
         {
             foreach (var pattern in patterns)
             {
+                var replacementText = pattern == Song.FunkymixPattern ? "Funkymix" : "";
+
                 if (!IsNumberedArtist(FileName) || pattern != SinglesPattern)
                 {
-                    var renamedFileName = ReplacePattern(pattern, FileName);
+                    var renamedFileName = ReplacePattern(pattern, FileName, replacementText);
                     RenameFile(renamedFileName);
                 }
             }
@@ -124,7 +128,7 @@ namespace DjEliB.Renamer
             return isNumberedArtist;
         }
 
-        public static string ReplacePattern(string pattern, string songText)
+        public static string ReplacePattern(string pattern, string songText, string replacementText = "")
         {
             if (!string.IsNullOrEmpty(songText))
             {
@@ -132,7 +136,7 @@ namespace DjEliB.Renamer
                 {
                     if (Regex.IsMatch(songText, pattern))
                     {
-                        songText = Regex.Replace(songText, pattern, "");
+                        songText = Regex.Replace(songText, pattern, replacementText);
                         songText = songText.Trim();
                     }
                 }

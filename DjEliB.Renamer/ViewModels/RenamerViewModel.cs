@@ -243,6 +243,34 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
+        private bool _chkbxIsFunkymixChecked;
+
+        public bool ChkbxIsFunkymixChecked
+        {
+            get { return _chkbxIsFunkymixChecked; }
+            set
+            {
+                _chkbxIsFunkymixChecked = value;
+                CheckSelectAll();
+                _renamer.IsFunkymixChecked = _chkbxIsFunkymixChecked;
+                NotifyPropertyChanged("ChkbxIsFunkymixChecked");
+            }
+        }
+
+        private bool _chkbxIsBpmAtEndChecked;
+
+        public bool ChkbxIsBpmAtEndChecked
+        {
+            get { return _chkbxIsBpmAtEndChecked; }
+            set
+            {
+                _chkbxIsBpmAtEndChecked = value;
+                CheckSelectAll();
+                _renamer.IsBpmAtEndChecked = _chkbxIsBpmAtEndChecked;
+                NotifyPropertyChanged("ChkbxIsBpmAtEndChecked");
+            }
+        }
+
         private bool _chkbxIsSelectAllChecked;
 
         public bool ChkbxIsSelectAllChecked
@@ -285,6 +313,8 @@ namespace DjEliB.Renamer.ViewModels
                 ChkbxIsUnderscoreChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsClearCommentChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsReleaseNameChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsFunkymixChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsBpmAtEndChecked = _chkbxIsSelectAllChecked;
                 isSelectingAll = false;
             }
         }
@@ -303,6 +333,8 @@ namespace DjEliB.Renamer.ViewModels
                     _chkbxIsUkTopFortyChecked &&
                     _chkbxIsClearCommentChecked &&
                     _chkbxIsReleaseNameChecked &&
+                    _chkbxIsFunkymixChecked &&
+                    _chkbxIsBpmAtEndChecked &&
                     _chkbxIsUnderscoreChecked)
                 {
                     ChkbxIsSelectAllChecked = true;
@@ -334,13 +366,17 @@ namespace DjEliB.Renamer.ViewModels
 
                 foreach (var song in songs)
                 {
-                    song.Id3Tag.RemovePatterns(patterns);
+                    if (patterns.Any())
+                    {
+                        song.Id3Tag.ReplacePatterns(patterns);
+                        song.ReplacePatterns(patterns);
+                    }
+
                     song.Id3Tag.EmptyAlbum();
                     song.Id3Tag.EmptyAlbumArtist();
                     song.Id3Tag.EmptyFrames();
 
                     song.ReplaceHyphen();
-                    song.RemovePatterns(patterns);
 
                     if (_renamer.IsUnderscoreChecked)
                     {

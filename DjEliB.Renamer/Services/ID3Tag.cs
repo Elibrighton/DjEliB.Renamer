@@ -34,19 +34,21 @@ namespace DjEliB.Renamer.Services
             }
         }
 
-        public void RemovePatterns(List<string> patterns)
+        public void ReplacePatterns(List<string> patterns)
         {
             foreach (var pattern in patterns)
             {
                 if (_tagLibFile != null)
                 {
-                    _tagLibFile.Tag.Title = Song.ReplacePattern(pattern, _tagLibFile.Tag.Title);
+                    var replacementText = pattern == Song.FunkymixPattern ? "Funkymix" : "";
 
-                    var renamedPerformer = Song.ReplacePattern(pattern, _tagLibFile.Tag.FirstPerformer);
+                    _tagLibFile.Tag.Title = Song.ReplacePattern(pattern, _tagLibFile.Tag.Title, replacementText);
+
+                    var renamedPerformer = Song.ReplacePattern(pattern, _tagLibFile.Tag.FirstPerformer, replacementText);
                     _tagLibFile.Tag.Performers = null;
                     _tagLibFile.Tag.Performers = new[] { renamedPerformer };
 
-                    _tagLibFile.Tag.Lyrics = Song.ReplacePattern(pattern, _tagLibFile.Tag.Lyrics);
+                    _tagLibFile.Tag.Lyrics = Song.ReplacePattern(pattern, _tagLibFile.Tag.Lyrics, replacementText);
                 }
             }
         }

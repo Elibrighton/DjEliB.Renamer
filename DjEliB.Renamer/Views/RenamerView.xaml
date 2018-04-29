@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DjEliB.Renamer.ViewModels"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Renamer" Height="450" Width="600">
+        Title="Renamer" Height="500" Width="600">
     <Window.DataContext>
         <local:RenamerViewModel/>
     </Window.DataContext>
@@ -83,6 +83,8 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <CheckBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsSelectAllChecked}">Select all</CheckBox>
                 <Label Grid.Column="0" Grid.Row="1" Content="Patterns:"></Label>
@@ -92,9 +94,11 @@
                 <CheckBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsZeroDayMusicChecked}">www.0daymusic.org - www.0daymusic.org</CheckBox>
                 <CheckBox Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsNewChecked}">(new) - (new)</CheckBox>
                 <CheckBox Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUkTopFortyChecked}">UK Top 40 - UK Top 40 [15-02-2009] - [320]</CheckBox>
-                <Label Grid.Column="0" Grid.Row="8" Content="Options:"></Label>
-                <CheckBox Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUnderscoreChecked}">Underscore at spaces</CheckBox>
-                <CheckBox Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsClearCommentChecked}">Clear comment</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsFunkymixChecked}">Funkymix - Funkymiix</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsBpmAtEndChecked}">End with BPM - 70 | 121</CheckBox>
+                <Label Grid.Column="0" Grid.Row="10" Content="Options:"></Label>
+                <CheckBox Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUnderscoreChecked}">Underscore at spaces</CheckBox>
+                <CheckBox Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsClearCommentChecked}">Clear comment</CheckBox>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
