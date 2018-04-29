@@ -20,7 +20,8 @@ namespace DjEliB.Renamer.Models
         public bool IsUkTopFortyChecked { get; set; }
         public bool IsClearCommentChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
-        public string RemixName { get; set; }
+        public string ReleaseName { get; set; }
+        public bool IsReleaseNameChecked { get; set; }
 
         public RenamerModel()
         {

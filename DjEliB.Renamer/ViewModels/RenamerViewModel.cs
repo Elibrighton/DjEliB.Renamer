@@ -104,16 +104,16 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
-        private string _txtRemixName;
+        private string _txtReleaseName;
 
-        public string TxtRemixName
+        public string TxtReleaseName
         {
-            get { return _txtRemixName; }
+            get { return _txtReleaseName; }
             set
             {
-                _txtRemixName = value;
-                _renamer.RemixName = _txtRemixName;
-                NotifyPropertyChanged("TxtRemixName");
+                _txtReleaseName = value;
+                _renamer.ReleaseName = _txtReleaseName;
+                NotifyPropertyChanged("TxtReleaseName");
             }
         }
 
@@ -210,7 +210,7 @@ namespace DjEliB.Renamer.ViewModels
             {
                 _chkbxIsClearCommentChecked = value;
                 CheckSelectAll();
-                _renamer.IsUkTopFortyChecked = _chkbxIsClearCommentChecked;
+                _renamer.IsClearCommentChecked = _chkbxIsClearCommentChecked;
                 NotifyPropertyChanged("ChkbxIsClearCommentChecked");
             }
         }
@@ -226,6 +226,20 @@ namespace DjEliB.Renamer.ViewModels
                 CheckSelectAll();
                 _renamer.IsUnderscoreChecked = _chkbxIsUnderscoreChecked;
                 NotifyPropertyChanged("ChkbxIsUnderscoreChecked");
+            }
+        }
+
+        private bool _chkbxIsReleaseNameChecked;
+
+        public bool ChkbxIsReleaseNameChecked
+        {
+            get { return _chkbxIsReleaseNameChecked; }
+            set
+            {
+                _chkbxIsReleaseNameChecked = value;
+                CheckSelectAll();
+                _renamer.IsReleaseNameChecked = _chkbxIsReleaseNameChecked;
+                NotifyPropertyChanged("ChkbxIsReleaseNameChecked");
             }
         }
 
@@ -270,6 +284,7 @@ namespace DjEliB.Renamer.ViewModels
                 ChkbxIsUkTopFortyChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsUnderscoreChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsClearCommentChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsReleaseNameChecked = _chkbxIsSelectAllChecked;
                 isSelectingAll = false;
             }
         }
@@ -287,6 +302,7 @@ namespace DjEliB.Renamer.ViewModels
                     _chkbxIsNewChecked &&
                     _chkbxIsUkTopFortyChecked &&
                     _chkbxIsClearCommentChecked &&
+                    _chkbxIsReleaseNameChecked &&
                     _chkbxIsUnderscoreChecked)
                 {
                     ChkbxIsSelectAllChecked = true;
@@ -310,7 +326,7 @@ namespace DjEliB.Renamer.ViewModels
             MainProgressIsIndeterminate = true;
             var patterns = _renamer.GetSelectedPatterns();
 
-            if (patterns.Any() || _renamer.IsUnderscoreChecked || _renamer.IsClearCommentChecked)
+            if (IsChangeRequried(patterns))
             {
                 var songs = _renamer.GetSongs();
                 MainProgressIsIndeterminate = false;
@@ -338,10 +354,14 @@ namespace DjEliB.Renamer.ViewModels
                         song.Id3Tag.EmptyComment();
                     }
 
-                    if (!string.IsNullOrEmpty(_renamer.RemixName))
+                    if (!string.IsNullOrEmpty(_renamer.ReleaseName))
                     {
-                        song.AddRemixName(_renamer.RemixName);
-                        song.Id3Tag.AddAlbum(_renamer.RemixName);
+                        song.Id3Tag.AddAlbum(_renamer.ReleaseName);
+                    }
+
+                    if (_renamer.IsReleaseNameChecked && !string.IsNullOrEmpty(_renamer.ReleaseName))
+                    {
+                        song.AddReleaseName(_renamer.ReleaseName);
                     }
 
                     song.Id3Tag.Save();
@@ -353,6 +373,14 @@ namespace DjEliB.Renamer.ViewModels
             MainProgressIsIndeterminate = false;
             MessageBox.Show("Finished renaming.");
             ResetMainProgress();
+        }
+
+        private bool IsChangeRequried(List<String> patterns)
+        {
+            return (patterns.Any() 
+                || _renamer.IsUnderscoreChecked 
+                || _renamer.IsClearCommentChecked 
+                || !string.IsNullOrEmpty(_renamer.ReleaseName));
         }
 
         private void ResetMainProgress()

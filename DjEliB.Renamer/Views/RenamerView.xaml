@@ -64,7 +64,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <Button Grid.Column="0" Grid.Row="0" Margin="0, 0, 5, 0" MinWidth="100" Command="{Binding ConsolidateFilesButtonCommand}">Consolidate Files</Button>
+                <Button Grid.Column="0" Grid.Row="0" Margin="0, 0, 5, 0" MinWidth="100" Command="{Binding ConsolidateFilesButtonCommand}">Consolidate files</Button>
             </Grid>
             <Grid Margin="0, 10, 0, 0">
                 <Grid.ColumnDefinitions>
@@ -98,14 +98,16 @@
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" MinWidth="100"></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Content="Remix name:"></Label>
-                <TextBox Grid.Column="1" Grid.Row="0" Margin="0, 0, 5, 0" Text="{Binding TxtRemixName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <Label Grid.Column="0" Grid.Row="0" Content="Release name:"></Label>
+                <TextBox Grid.Column="0" Grid.Row="1" Margin="0, 0, 5, 0" Text="{Binding TxtReleaseName, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                <CheckBox Grid.Column="0" Grid.Row="2" IsChecked="{Binding ChkbxIsReleaseNameChecked}">Add release name to file name</CheckBox>
             </Grid>
             <Grid Margin="0, 10, 0, 0">
                 <Grid.ColumnDefinitions>

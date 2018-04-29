@@ -159,17 +159,16 @@ namespace DjEliB.Renamer
             }
         }
 
-        internal void AddRemixName(string remixName)
+        internal void AddReleaseName(string releaseName)
         {
-            remixName = remixName.Replace("(", "").Replace(")", "");
-            var pattern = string.Concat(@"\(", remixName, @".*\)");
+            releaseName = releaseName.Replace("(", "").Replace(")", "");
+            var pattern = string.Concat(@"\(", releaseName, @".*\)");
 
             if (!Regex.IsMatch(FileName, pattern))
             {
-                remixName = string.Concat("(", remixName, ")");
-                var renamedFileName = string.Concat(FileName, " ", remixName);
+                releaseName = string.Concat("(", releaseName, ")");
+                var renamedFileName = string.Concat(FileName, " ", releaseName);
                 RenameFile(renamedFileName);
-
             }
         }
 
@@ -194,6 +193,7 @@ namespace DjEliB.Renamer
                                                         @"^257ers",
                                                         @"^2Pac",
                                                         @"^2Play",
+                                                        @"^24hrs",
                                                         @"^2NE1",
                                                         @"^2012\s\(",
                                                         @"^211\sft.",
@@ -236,6 +236,7 @@ namespace DjEliB.Renamer
                                                         @"^4B",
                                                         @"^4\s?PM",
                                                         @"^4\sNon\sBlondes",
+                                                        @"^4\sThe\sCause",
                                                         @"^5\sSeconds\sOf\sSummer",
                                                         @"^5\s&\sA\sDime",
                                                         @"^50\scent",
@@ -258,10 +259,12 @@ namespace DjEliB.Renamer
                                                         @"^702\s-\sWhere",
                                                         @"^8ers",
                                                         @"^90's",
+                                                        @"^9pm",
                                                         @"^95\sSouth",
                                                         @"^98\sDegrees",
                                                         @"^99\sproblems",
                                                         @"^99\sSouls",
+                                                        @"^914\sHit\sSquad",
                                                         @"^99X"
                         };
 

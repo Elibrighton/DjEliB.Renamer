@@ -45,6 +45,8 @@ namespace DjEliB.Renamer.Services
                     var renamedPerformer = Song.ReplacePattern(pattern, _tagLibFile.Tag.FirstPerformer);
                     _tagLibFile.Tag.Performers = null;
                     _tagLibFile.Tag.Performers = new[] { renamedPerformer };
+
+                    _tagLibFile.Tag.Lyrics = Song.ReplacePattern(pattern, _tagLibFile.Tag.Lyrics);
                 }
             }
         }
@@ -95,6 +97,7 @@ namespace DjEliB.Renamer.Services
                     id3v2Tag.SetTextFrame("TRSN", "");
                     id3v2Tag.SetTextFrame("TXXX", "");
                     id3v2Tag.SetTextFrame("WXXX", "");
+                    id3v2Tag.SetTextFrame("TENC", "");
                 }
             }
         }
