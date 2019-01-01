@@ -215,6 +215,20 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
+        private bool _chkbxIsPreserveEnergyInCommentChecked;
+
+        public bool ChkbxIsPreserveEnergyInCommentChecked
+        {
+            get { return _chkbxIsPreserveEnergyInCommentChecked; }
+            set
+            {
+                _chkbxIsPreserveEnergyInCommentChecked = value;
+                CheckSelectAll();
+                _renamer.IsPreserveEnergyInCommentChecked = _chkbxIsPreserveEnergyInCommentChecked;
+                NotifyPropertyChanged("ChkbxIsPreserveEnergyInCommentChecked");
+            }
+        }
+
         private bool _chkbxIsUnderscoreChecked;
 
         public bool ChkbxIsUnderscoreChecked
@@ -312,6 +326,7 @@ namespace DjEliB.Renamer.ViewModels
                 ChkbxIsUkTopFortyChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsUnderscoreChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsClearCommentChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsPreserveEnergyInCommentChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsReleaseNameChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsFunkymixChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsBpmAtEndChecked = _chkbxIsSelectAllChecked;
@@ -332,6 +347,7 @@ namespace DjEliB.Renamer.ViewModels
                     _chkbxIsNewChecked &&
                     _chkbxIsUkTopFortyChecked &&
                     _chkbxIsClearCommentChecked &&
+                    _chkbxIsPreserveEnergyInCommentChecked &&
                     _chkbxIsReleaseNameChecked &&
                     _chkbxIsFunkymixChecked &&
                     _chkbxIsBpmAtEndChecked &&
@@ -387,7 +403,14 @@ namespace DjEliB.Renamer.ViewModels
 
                     if (_renamer.IsClearCommentChecked)
                     {
-                        song.Id3Tag.EmptyComment();
+                        if (_renamer.IsPreserveEnergyInCommentChecked)
+                        {
+                            song.Id3Tag.PreserveEnergyInComment();
+                        }
+                        else
+                        {
+                            song.Id3Tag.EmptyComment();
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(_renamer.ReleaseName))

@@ -61,6 +61,14 @@ namespace DjEliB.Renamer.Services
             }
         }
 
+        internal void PreserveEnergyInComment()
+        {
+            if (_tagLibFile != null)
+            {
+                _tagLibFile.Tag.Comment = Song.ExtractPattern(@"Energy\s(10$|\d$)", _tagLibFile.Tag.Comment);
+            }
+        }
+
         internal void EmptyAlbum()
         {
             if (_tagLibFile != null)

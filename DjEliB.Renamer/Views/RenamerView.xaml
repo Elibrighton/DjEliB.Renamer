@@ -99,6 +99,7 @@
                 <Label Grid.Column="0" Grid.Row="10" Content="Options:"></Label>
                 <CheckBox Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsUnderscoreChecked}">Underscore at spaces</CheckBox>
                 <CheckBox Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" IsChecked="{Binding ChkbxIsClearCommentChecked}">Clear comment</CheckBox>
+                <CheckBox Grid.Column="1" Grid.Row="12" IsChecked="{Binding ChkbxIsPreserveEnergyInCommentChecked}">Preserve Energy in comment</CheckBox>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

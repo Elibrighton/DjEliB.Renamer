@@ -19,6 +19,7 @@ namespace DjEliB.Renamer.Models
         public bool IsNewChecked { get; set; }
         public bool IsUkTopFortyChecked { get; set; }
         public bool IsClearCommentChecked { get; set; }
+        public bool IsPreserveEnergyInCommentChecked { get; set; }
         public bool IsUnderscoreChecked { get; set; }
         public string ReleaseName { get; set; }
         public bool IsReleaseNameChecked { get; set; }
