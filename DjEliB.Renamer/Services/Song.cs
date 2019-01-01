@@ -145,20 +145,6 @@ namespace DjEliB.Renamer
             return songText;
         }
 
-        public static string ExtractPattern(string pattern, string songText)
-        {
-            if (!string.IsNullOrEmpty(songText))
-            {
-                if (Regex.IsMatch(songText, pattern))
-                {
-                    var match = Regex.Match(songText, pattern);
-                    songText = match.Value.Trim();
-                }
-            }
-
-            return songText;
-        }
-
         internal void ReplaceUnderscores()
         {
             if (!FileName.Contains(" ") && FileName.Contains("_"))
@@ -208,7 +194,6 @@ namespace DjEliB.Renamer
                                                         @"^123XYZ",
                                                         @"^1999",
                                                         @"^10\sDigits",
-                                                        @"^10,000\sManiacs",
                                                         @"^257ers",
                                                         @"^2Pac",
                                                         @"^2Play",
@@ -268,7 +253,6 @@ namespace DjEliB.Renamer
                                                         @"^6treg",
                                                         @"^6\sBoys",
                                                         @"^666\s-\sBomba",
-                                                        @"^666\s-\sSupa",
                                                         @"^6ix9ine",
                                                         @"^6lack",
                                                         @"^6ix9ine",
