@@ -129,5 +129,38 @@ namespace DjEliB.Renamer.Services
 
             return songText;
         }
+
+        internal void SetLeadingAndTrailingBpm(string songText, string transitionPattern)
+        {
+            if (!string.IsNullOrEmpty(songText))
+            {
+                if (_tagLibFile != null)
+                {
+                    var regex = new Regex(transitionPattern);
+                    var match = regex.Match(songText);
+
+                    if (match.Success)
+                    {
+                        var matchedTransition = match.Value.Trim().Replace('-', ' ');
+
+                        var index = matchedTransition.IndexOf(' ');
+                        var leadingBpm = Convert.ToInt32((index > 0 ? matchedTransition.Substring(0, index) : "").Trim());
+                        var trailingBpm = Convert.ToInt32((index > 0 ? matchedTransition.Substring(index + 1) : "").Trim());
+
+                        _tagLibFile.Tag.Title = string.Concat(leadingBpm.ToString(), " ", _tagLibFile.Tag.Title);
+
+                        var performers = string.Empty;
+
+                        if (_tagLibFile.Tag.Performers.Any())
+                        {
+                            performers = _tagLibFile.Tag.Performers[0];
+                        }
+
+                        _tagLibFile.Tag.Performers = null;
+                        _tagLibFile.Tag.Performers = new[] { string.Concat(trailingBpm.ToString(), " ", performers) };
+                    }
+                }
+            }
+        }
     }
 }

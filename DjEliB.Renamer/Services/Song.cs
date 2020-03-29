@@ -20,6 +20,7 @@ namespace DjEliB.Renamer
         public const string FunkymixPattern = @"Funkymiix";
         public const string BpmAtEndPattern = @"\d\d\d?$";
         public const string SupportedExtensionPattern = @"\.(mp3$|wav$|mp4$)";
+        public const string TransitionPattern = @"\d\d\d?(\s?-\s?|\s)\d\d\d?";
 
         public Song(string path)
         {
@@ -181,6 +182,7 @@ namespace DjEliB.Renamer
             string[] numberedArtist = {
                                                         @"^0\sT0\s100\sThe",
                                                         @"^1,\s2\sStep",
+                                                        @"^12\sHoncho\s",
                                                         @"^100it",
                                                         @"^106\sMiles",
                                                         @"^112\s-\sDANCE",
@@ -213,6 +215,7 @@ namespace DjEliB.Renamer
                                                         @"^2\sPistols",
                                                         @"^20\sfingers",
                                                         @"^21\sSavage",
+                                                        @"^22Gz\s",
                                                         @"^24K\sMagic",
                                                         @"^24\sHours",
                                                         @"^2\sPac",
@@ -226,6 +229,7 @@ namespace DjEliB.Renamer
                                                         @"^311\s-\sAmber",
                                                         @"^360\s-",
                                                         @"^360\sFt\.\s",
+                                                        @"^3F3XT\s",
                                                         @"^3T",
                                                         @"^3LAU",
                                                         @"^3BOL",
@@ -234,6 +238,7 @@ namespace DjEliB.Renamer
                                                         @"^3Oh3",
                                                         @"^3Oh!3",
                                                         @"^33Hz",
+                                                        @"^38\sSPESH\s",
                                                         @"^30\sSeconds\sTo\sMars",
                                                         @"^3\sDoors\sDown",
                                                         @"^3\sThes\sHard",
@@ -262,6 +267,7 @@ namespace DjEliB.Renamer
                                                         @"^7\sYears",
                                                         @"^702\s-\sWhere",
                                                         @"^8ers",
+                                                        @"^88\sGlam\s",
                                                         @"^90's",
                                                         @"^9pm",
                                                         @"^95\sSouth",

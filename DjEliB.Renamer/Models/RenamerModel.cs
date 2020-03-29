@@ -24,16 +24,19 @@ namespace DjEliB.Renamer.Models
         public bool IsReleaseNameChecked { get; set; }
         public bool IsFunkymixChecked { get; set; }
         public bool IsBpmAtEndChecked { get; set; }
+        public bool IsTransitionChecked { get; set; }
 
         public RenamerModel()
         {
-            SourceDirectory = @"C:\DJ Eli B\Unprocessed";
+            SourceDirectory = @"C:\DJ Playlists\Unprocessed\To be processed";
         }
 
         public void Consolidate()
         {
             if (Directory.Exists(SourceDirectory))
             {
+                SetAttributesNormal(new DirectoryInfo(SourceDirectory));
+
                 ConsolidateSubdirectories(SourceDirectory);
                 DeleteSubdirectories(SourceDirectory);
             }
@@ -47,6 +50,19 @@ namespace DjEliB.Renamer.Models
             {
                 DeleteSubdirectories(subdirectory);
                 Directory.Delete(subdirectory);
+            }
+        }
+
+        public void SetAttributesNormal(DirectoryInfo dir)
+        {
+            foreach (var subDir in dir.GetDirectories())
+            {
+                SetAttributesNormal(subDir);
+            }
+
+            foreach (var file in dir.GetFiles())
+            {
+                file.Attributes = FileAttributes.Normal;
             }
         }
 
@@ -183,6 +199,18 @@ namespace DjEliB.Renamer.Models
             }
 
             return patterns;
+        }
+
+        public string GetTransitionPattern()
+        {
+            var pattern = string.Empty;
+
+            if (IsTransitionChecked)
+            {
+                pattern = Song.TransitionPattern;
+            }
+
+            return pattern;
         }
     }
 }

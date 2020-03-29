@@ -284,6 +284,20 @@ namespace DjEliB.Renamer.ViewModels
             }
         }
 
+        private bool _chkbxIsTransitionChecked;
+
+        public bool ChkbxIsTransitionChecked
+        {
+            get { return _chkbxIsTransitionChecked; }
+            set
+            {
+                _chkbxIsTransitionChecked = value;
+                CheckSelectAll();
+                _renamer.IsTransitionChecked = _chkbxIsTransitionChecked;
+                NotifyPropertyChanged("ChkbxIsTransitionChecked");
+            }
+        }
+
         private ICommand _closeApplicationCommand;
 
         public ICommand CloseApplicationCommand
@@ -315,6 +329,7 @@ namespace DjEliB.Renamer.ViewModels
                 ChkbxIsReleaseNameChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsFunkymixChecked = _chkbxIsSelectAllChecked;
                 ChkbxIsBpmAtEndChecked = _chkbxIsSelectAllChecked;
+                ChkbxIsTransitionChecked = _chkbxIsSelectAllChecked;
                 isSelectingAll = false;
             }
         }
@@ -335,7 +350,8 @@ namespace DjEliB.Renamer.ViewModels
                     _chkbxIsReleaseNameChecked &&
                     _chkbxIsFunkymixChecked &&
                     _chkbxIsBpmAtEndChecked &&
-                    _chkbxIsUnderscoreChecked)
+                    _chkbxIsUnderscoreChecked &&
+                    _chkbxIsTransitionChecked)
                 {
                     ChkbxIsSelectAllChecked = true;
                 }
@@ -357,8 +373,9 @@ namespace DjEliB.Renamer.ViewModels
         {
             MainProgressIsIndeterminate = true;
             var patterns = _renamer.GetSelectedPatterns();
+            var transitionPattern = _renamer.GetTransitionPattern();
 
-            if (IsChangeRequried(patterns))
+            if (IsChangeRequried(patterns, transitionPattern))
             {
                 var songs = _renamer.GetSongs();
                 MainProgressIsIndeterminate = false;
@@ -400,6 +417,11 @@ namespace DjEliB.Renamer.ViewModels
                         song.AddReleaseName(_renamer.ReleaseName);
                     }
 
+                    if (_renamer.IsTransitionChecked)
+                    {
+                        song.Id3Tag.SetLeadingAndTrailingBpm(song.FileName, transitionPattern);
+                    }
+
                     song.Id3Tag.Save();
                     song.Id3Tag.Dispose();
                     MainProgressValue++;
@@ -411,12 +433,13 @@ namespace DjEliB.Renamer.ViewModels
             ResetMainProgress();
         }
 
-        private bool IsChangeRequried(List<String> patterns)
+        private bool IsChangeRequried(List<String> patterns, string transitionPattern)
         {
             return (patterns.Any() 
                 || _renamer.IsUnderscoreChecked 
                 || _renamer.IsClearCommentChecked 
-                || !string.IsNullOrEmpty(_renamer.ReleaseName));
+                || !string.IsNullOrEmpty(_renamer.ReleaseName)
+                || !string.IsNullOrEmpty(transitionPattern));
         }
 
         private void ResetMainProgress()
