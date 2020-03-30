@@ -244,6 +244,7 @@ namespace DjEliB.Renamer
                                                         @"^3\sThes\sHard",
                                                         @"^4-IZE",
                                                         @"^4B",
+                                                        @"^404vincent",
                                                         @"^4\s?PM",
                                                         @"^4\sNon\sBlondes",
                                                         @"^4\sThe\sCause",
