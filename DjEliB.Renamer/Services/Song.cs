@@ -243,6 +243,7 @@ namespace DjEliB.Renamer
                                                         @"^30\sSeconds\sTo\sMars",
                                                         @"^3\sDoors\sDown",
                                                         @"^3\sThes\sHard",
+                                                        @"^3582\s-\sLoser",
                                                         @"^4-IZE",
                                                         @"^4B",
                                                         @"^404vincent",
