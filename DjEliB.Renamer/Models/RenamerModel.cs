@@ -28,7 +28,7 @@ namespace DjEliB.Renamer.Models
 
         public RenamerModel()
         {
-            SourceDirectory = @"C:\DJ Playlists\Unprocessed\To be processed";
+            SourceDirectory = @"C:\Traktor music\Unprocessed\To be processed";
         }
 
         public void Consolidate()

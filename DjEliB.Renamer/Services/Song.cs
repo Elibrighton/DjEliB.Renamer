@@ -271,6 +271,7 @@ namespace DjEliB.Renamer
                                                         @"^7\sTemperature",
                                                         @"^7\sYears",
                                                         @"^702\s-\sWhere",
+                                                        @"^7-Eleven",
                                                         @"^8ers",
                                                         @"^88\sGlam\s",
                                                         @"^90's",
