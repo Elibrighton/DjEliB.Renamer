@@ -11,7 +11,10 @@ namespace DjEliB.Renamer
 {
     public class Song
     {
-        public const string SinglesPattern = @"^\.?[0-9]+(\.|\.\s|\s?\-\s?|\s)";
+        public const string SinglesPattern = @"^\.?[0-9]+(\.|\.\s|\s?\-\s?|\s|\w\s\-\s|\,\s)";
+        //public const string SinglesPattern = @"^\-\s";
+        //public const string SinglesPattern = @"^\(\d+\)\.";
+        //public const string SinglesPattern = @"^[0-9]+\-[0-9]+\s";
         public const string ElectroHousePattern = @"(\s?\-?\s?|http\:\\\\)ElectroHouse\.ucoz\.com";
         public const string FtpPattern = @"DJFTP\.COM";
         public const string ZeroDayMusicPattern = @"www\.0daymusic\.org";
